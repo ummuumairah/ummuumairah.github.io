@@ -1,0 +1,93 @@
+/* Global Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Footer Styling */
+.footer {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0; /* Konsisten untuk semua footer */
+    margin-top: 20px;
+    box-sizing: border-box; /* Pastikan padding tidak mempengaruhi saiz */
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    background-color: #d17a88; /* Adjust to your preferred color */
+    color: white;
+    padding: 20px 0;
+    position: relative; /* or fixed/sticky if desired */
+    left: 0;
+    bottom: 0;
+}
+
+
+.footer p {
+    margin: 5px 0; /* Margin dalaman untuk teks */
+}
+
+footer p {
+    color: #fff;
+}
+
+
+.footer a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    position: relative;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+.footer-clock {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 1.2em;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+.scroll-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #f7a8b8, #ff91a4);
+    color: white;
+    border: 2px solid #ff91a4;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 4px 4px 10px rgba(255, 145, 164, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    z-index: 9999;
+}
+
+.scroll-button:hover {
+    transform: scale(1.1);
+    box-shadow: 6px 6px 15px rgba(255, 145, 164, 0.6), -6px -6px 15px rgba(255, 255, 255, 0.6);
+}
+
+.scroll-button:active {
+    transform: scale(1);
+    box-shadow: inset 4px 4px 10px rgba(255, 145, 164, 0.4), inset -4px -4px 10px rgba(255, 255, 255, 0.4);
+}
+

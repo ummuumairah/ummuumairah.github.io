@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Family</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fcc0e1;
+            color: #333;
+            text-align: center;
+        }
+
+        
+    
+        .top-box {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #ff0077;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            position: relative;
+        
+        }
+
+        .top-box .options {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .top-box .options a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .top-box .options a:hover {
+            color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: #ffffff;
+            color: #ff67c5;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            cursor: pointer;
+            margin-left: -5px;
+        }
+
+        .search-container button:hover {
+            background-color: #ff60b8;
+            color: white;
+        }
+
+         /* Suggestions List - Enhance with Smooth Transitions */
+#suggestionBox {
+    position: absolute;
+    top: 60px; /* Adjust for proper placement */
+    left: 10; 
+    width: 110; /* Adjust to align with input */
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    font-size: 1em;
+    padding: 10px;
+    display: none;
+}
+
+.suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-family: "Arial", sans-serif;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #ff67c5;
+    color: white;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Search Button Enhancements */
+.search-container button {
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        /* Coquette Hamburger Menu */
+        .menu-container {
+            position: absolute;  
+            top: 50%;  
+            left: 20px;  
+            transform: translateY(-50%);
+            z-index: 1000;  
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 86, 199, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ff60b8;
+            color: #fff;
+            border-radius: 25px;
+            transform: scale(1.1);
+        }
+
+        .menu-container.active .menu-bar:nth-child(1) {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(3) {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar.active {
+            width: 250px;
+        }
+
+        header {
+            background-color: #ffb6d8;
+            padding: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .main-picture {
+            width: 100%;
+            height: auto;
+            object-fit: cover; /* Ensures the image covers the full width */
+            max-height: 500px; /* Limits the height */
+            margin-bottom: 20px; /* Adds space below the image */
+        }
+
+        .family-section {
+            padding: 20px;
+        }
+
+        .family-section h1 {
+            font-size: 36px;
+            color: #f47f9d;
+            margin-bottom: 20px;
+        }
+
+        .family-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .family-gallery img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .family-gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .hs-video-gallery video {
+           width: 500px; /* Lebar video */
+           height: auto; /* Tinggi secara automatik untuk mengekalkan nisbah */
+           border: 3px solid #f47f9d; /* Warna border */
+           border-radius: 8px; /* Membulatkan tepi video */
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan */
+           transition: transform 0.3s ease; /* Animasi hover */
+}
+
+        .video-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Gap between videos */
+            margin-top: 20px;
+        }
+
+        .video-gallery video {
+            max-width: 24%;
+            border: 3px solid #f47f9d;
+            border-radius: 8px;
+        }
+
+        .video-gallery video,
+        .horizontal-video video {
+            border: 3px solid #f47f9d;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .horizontal-video {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .friend-section {
+            padding: 20px;
+        }
+
+        .friend-section h1 {
+            font-size: 36px;
+            color: #f47f9d;
+            margin-bottom: 20px;
+        }
+
+        .friend-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .friend-gallery img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .friend-gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .message {
+            color: #ff389f;  /* Soft pink color */
+            font-size: 20px;
+            margin-top: 20px;
+            max-width: 80%;  /* Adjust width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .HighSchool-section {
+            padding: 20px;
+        }
+
+        .HighSchool-section h1 {
+            font-size: 36px;
+            color: #f47f9d;
+            margin-bottom: 20px;
+        }
+        
+        
+        .circle-container {
+            width: 200px; /* Adjust size of the circle */
+            height: 200px;
+            border-radius: 50%; /* Makes it circular */
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds a shadow for aesthetic */
+        }
+
+        .circle-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hs-grid-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+    }
+
+    .hs-grid-gallery img {
+        width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+    }
+
+    .hs-grid-gallery img:hover {
+        transform: scale(1.1); /* Zoom apabila hover */
+    }
+
+        .hs-video-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .marquee {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 200, 248);
+            padding: 10px;
+            font-size: 1.0em;
+            display: inline-block;
+            position: relative;
+            z-index: 3;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 3 columns */
+    grid-template-rows: repeat(3, auto);  /* 2 rows */
+    gap: 0; /* No gap between videos */
+    width: 100%; /* Adjust container width */
+}
+
+.video-grid video {
+    width: 100%; 
+    height: auto; 
+    object-fit: cover; 
+}
+
+.profile-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.image-frame {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #ffadad;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-box {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffebf0;
+    color: #333;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: 10px auto;
+}
+
+.message-box p {
+    margin: 0;
+    font-style: italic;
+}
+
+
+
+          /* Back Button */
+    .back-button {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .back-button a {
+      padding: 0.8rem 2rem;
+      background: #e94e77;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: #c9375d;
+    }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .name-container h2 {
+                font-size: 6vw;
+            }
+
+            .main-content video {
+                height: auto;
+                width: 100%;
+            }
+
+            .cards-section {
+                padding: 20px;
+            }
+
+            .card {
+                width: 100%;
+                height: 250px;
+            }
+
+            .overlay {
+                font-size: 4vw;
+            }
+
+            .social-media {
+                padding: 15px;
+            }
+
+            .social-icons img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section p {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .name-container h2 {
+                font-size: 8vw;
+            }
+
+            .cards-section {
+                padding: 10px;
+            }
+
+            .card {
+                width: 100%;
+                height: 220px;
+            }
+
+            .overlay {
+                font-size: 5vw;
+            }
+
+        }
+    </style>
+</head>
+<body>
+
+    
+    <div class="top-box">
+
+        <div class="menu-container" onclick="toggleMenu()">
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+        </div>
+    
+        <div class="options">
+            <a href="ABOUTME.html">About Me</a>
+            <a href="EDUCATION.html">Education</a>
+            <a href="HOBBY.html">Hobby</a>
+            <a href="GALLERY.html">Gallery</a>
+            <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+            <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+        </div>
+    
+        <div class="search-container">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search..."
+            onfocus="showSuggestionBox()" 
+            onblur="hideSuggestionBox()"
+            oninput="updateSuggestions()"
+        >
+        <button onclick="searchFunction()">Search</button>
+        <div id="suggestionBox"></div>
+    </div>
+    
+    </div>
+    <!-- Search Results -->
+    <div class="search-results" id="searchResults"></div>
+    
+    <!-- Navbar (hidden initially) -->
+    <div class="navbar" id="navbar">
+        <a href="ABOUTME.html">About Me</a>
+        <a href="EDUCATION.html">Education</a>
+        <a href="HOBBY.html">Hobby</a>
+        <a href="GALLERY.html">Gallery</a>
+        <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+        <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+    </div>
+
+    <header>
+       WELCOME TO MY GALLERY 
+    </header>
+
+    <div class="family-section">
+        <img src="gallery1.jpg" alt="Main Picture" class="main-picture">
+
+        <h1>Family: where life begins and love never ends </h1>
+        <p>When everything goes to hell, the people who stand by you without flinching – they are your family 💕</p>
+
+        <div class="family-gallery">
+            <img src="family1.jpg" alt="Family Photo 1">
+            <img src="family2.jpg" alt="Family Photo 2">
+            <img src="family3.jpg" alt="Family Photo 3">
+            <img src="family4.jpg" alt="Family Photo 4">
+            <img src="family5.jpg" alt="Family Photo 5">
+            <img src="family6.jpg" alt="Family Photo 6">
+            <img src="family7.jpg" alt="Family Photo 7">
+            <img src="family8.jpg" alt="Family Photo 8">
+            <img src="family9.jpg" alt="Family Photo 9">
+            <img src="family10.jpg" alt="Family Photo 10">
+            <img src="family11.jpg" alt="Family Photo 11">
+            <img src="family12.jpg" alt="Family Photo 12">
+        </div>
+
+        <div class="friend-section">
+            <h1>Campus Chronicles </h1>
+            <p>✨ Collecting moments, not just grades — here's to the laughter, late nights, and lifelong friendships that make university unforgettable. 💕📚</p>
+    
+            <div class="video-gallery">
+                <video autoplay muted loop>
+                    <source src="friend1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="friend2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="friend3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="horizontal-video">
+                <video autoplay muted loop>
+                    <source src="friend4.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="friend-gallery">
+                <img src="friends1.jpg" alt="friendsPhoto 1">
+                <img src="friends2.jpg" alt="friends Photo 2">
+                <img src="friends3.jpg" alt="friends Photo 3">
+                <img src="friends4.jpg" alt="friends Photo 4">
+            </div>
+
+            <div class="message">
+                <p>
+                    "As we step into our last semester together, I just want to say how grateful I am for all the moments we've shared—whether it was laughing until our stomachs hurt, stressing over assignments, or just being there for each other. Here's to making the most of our remaining time together, creating memories that will last a lifetime. No matter where life takes us, I hope our paths cross again. Wishing you all the success, happiness, and adventures you deserve! Let’s make this semester unforgettable."
+                </p>
+            </div>
+
+            <div class="HighSchool-section">
+                <h1>HighSchool Buddies </h1>
+                <p>high school may be over, but the bond we share will always be my favorite chapter! </p>
+
+                   
+            <div class="hs-grid-gallery">
+                 <img src="hs1.jpg" alt="hs1 ">
+                 <img src="hs2.jpg" alt="hs2">
+                 <img src="hs3.jpg" alt="hs3">
+                 <img src="hs4.jpg" alt="hs4">
+                 <img src="hs5.jpg" alt="hs5">
+                 <img src="hs6.jpg" alt="hs6">
+                 <img src="hs7.jpg" alt="hs7">
+                 <img src="hs8.jpg" alt="hs8">
+                 <img src="hs9.jpg" alt="hs9">
+                 <img src="hs10.jpg" alt="hs10">
+                 <img src="hs11.jpg" alt="hs11">
+                 <img src="hs12.jpg" alt="hs12">
+             </div>
+
+             <div class="hs-video-gallery">
+                <video autoplay muted loop>
+                    <source src="hsvideo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+        
+            </div>
+            <br>
+
+            <marquee class="marquee" behavior="scroll" direction="left" loop="infinite">
+                EXTRA SNAPS, EXTRA SMILES 📸
+            </marquee>
+
+            <div class="video-grid">
+                <video autoplay muted loop>
+                    <source src="video1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="video2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="video3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="video4.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="video5.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop>
+                    <source src="video6.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <div class="profile-container">
+                <!-- Image Frame -->
+                <div class="image-frame">
+                    <img src="madamummu.jpg" alt="Lecturer's Photo">
+                </div>
+                
+                <!-- Message Box -->
+                <div class="message-box">
+                    <p>Thanks a lot for teaching me the skills I needed to complete this assignment. I couldn’t have done it without your support madam ummu 💖</p>
+                </div>
+            </div>
+            
+            
+    
+         <!-- Back Button -->
+  <div class="back-button">
+    <a href="INDEX.html">Back to Homepage</a>
+  </div>
+
+
+    <footer class="footer">
+        <p>&copy; 2024 UMMU UMAIRAH. All Rights Reserved.</p>
+        <p>Follow me on social media: 
+            <a href="https://www.instagram.com/maaairahhh/" target="_blank">Instagram</a> |
+            <a href="https://www.tiktok.com/@maaairahhh?_t=8r8PDiRqIxb&_r=1" target="_blank">TikTok</a> |
+            <a href="https://www.youtube.com/@maaairahhh" target="_blank">YouTube</a> |
+            <a href="https://www.facebook.com/ummu.umairah.378" target="_blank">Facebook</a> |
+            <a href="https://wa.link/2l1uoy" target="_blank">WhatsApp</a>
+        </p>
+        <div id="clock" class="footer-clock">
+    </footer>
+
+    <script>
+        // JavaScript to toggle the hamburger menu
+        function toggleMenu() {
+            const menuContainer = document.querySelector('.menu-container');
+            const navbar = document.getElementById('navbar');
+            menuContainer.classList.toggle('active');  // Toggle hamburger icon
+            navbar.classList.toggle('active');  // Toggle the navbar visibility
+        }
+        
+  
+    // Enhance search functionality with dynamic suggestions
+    const searchableItems = [
+        { name: "About Me", link: "ABOUTME.html" },
+        { name: "Education", link: "EDUCATION.html" },
+        { name: "Hobby", link: "HOBBY.html" },
+        { name: "Gallery", link: "GALLERY.html" },
+        { name: "Skills & Experience", link: "SKILLSANDEXPERIENCES.html" },
+        { name: "Achievements & Awards", link: "ACHIEVEMENTSANDAWARDS.html" },
+    ];
+    
+    const searchInput = document.getElementById("searchInput");
+    const suggestionBox = document.getElementById("suggestionBox");
+    
+    // Show suggestion box when focused
+    function showSuggestionBox() {
+        suggestionBox.style.display = "block";
+    }
+    
+    // Hide suggestion box when input is blurred
+    function hideSuggestionBox() {
+        setTimeout(() => (suggestionBox.style.display = "none"), 150); // Delay to allow click
+    }
+    
+    // Update suggestions dynamically
+    function updateSuggestions() {
+        const query = searchInput.value.trim().toLowerCase();
+        suggestionBox.innerHTML = "";
+    
+        if (!query) return; // Don't display suggestions if input is empty
+    
+        const matches = searchableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+    
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const suggestion = document.createElement("div");
+                suggestion.className = "suggestion";
+                suggestion.innerText = match.name;
+                suggestion.onclick = () => (window.location.href = match.link);
+                suggestionBox.appendChild(suggestion);
+            });
+        } else {
+            suggestionBox.innerHTML = "<div class='no-results'>No matches found</div>";
+        }
+    }
+    
+    // Handle search button functionality
+    function searchFunction() {
+        const query = searchInput.value.trim().toLowerCase();
+    
+        if (!query) {
+            alert("Please enter a search term!");
+            return;
+        }
+    
+        const match = searchableItems.find(item =>
+            item.name.toLowerCase() === query
+        );
+    
+        if (match) {
+            window.location.href = match.link;
+        } else {
+            alert("No exact matches found! Try using suggestions.");
+        }
+    }
+    function updateClock() {
+    const clockElement = document.getElementById('clock');
+    const currentDate = new Date();
+
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+    const year = currentDate.getFullYear();
+
+    // Format the clock as HH:MM:SS and Date as DD/MM/YYYY
+    clockElement.innerHTML = `${hours}:${minutes}:${seconds} | ${day}/${month}/${year}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize the clock when the page loads
+updateClock();
+
+    </script>
+  
+</body>
+</html>

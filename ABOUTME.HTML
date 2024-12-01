@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Ummu Umairah</title>
+    <link rel="stylesheet" href="styles.css">
+
+<body>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fef6f9;
+            color: #5a4d4f;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #4a3b4c;
+        }
+
+
+        .top-box {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #ff0077;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            position: relative;
+        
+        }
+
+        .top-box .options {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .top-box .options a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .top-box .options a:hover {
+            color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: #ffffff;
+            color: #ff67c5;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            cursor: pointer;
+            margin-left: -5px;
+        }
+
+        .search-container button:hover {
+            background-color: #ff60b8;
+            color: white;
+        }
+
+         /* Suggestions List - Enhance with Smooth Transitions */
+#suggestionBox {
+    position: absolute;
+    top: 60px; /* Adjust for proper placement */
+    left: 10; 
+    width: 110; /* Adjust to align with input */
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    font-size: 1em;
+    padding: 10px;
+    display: none;
+}
+
+.suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-family: "Arial", sans-serif;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #ff67c5;
+    color: white;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Search Button Enhancements */
+.search-container button {
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        /* Coquette Hamburger Menu */
+        .menu-container {
+            position: absolute;  
+            top: 50%;  
+            left: 20px;  
+            transform: translateY(-50%);
+            z-index: 1000;  
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 86, 199, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ff60b8;
+            color: #fff;
+            border-radius: 25px;
+            transform: scale(1.1);
+        }
+
+        .menu-container.active .menu-bar:nth-child(1) {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(3) {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar.active {
+            width: 250px;
+        }
+
+        .main-content video {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Make it full height */
+    object-fit: cover; /* Make sure it covers the screen without distortion */
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.about-me-introduction {
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'Georgia', serif; /* Professional serif font for elegance */
+    color: #4a4a4a;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.about-me-introduction h2 {
+    font-family: 'Merriweather', serif; /* Another elegant serif font for the heading */
+    font-size: 2em; /* Balanced, not too large */
+    color: #d48f8f; /* Soft rose pink */
+    font-weight: 600; /* Slightly bold for emphasis */
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: capitalize; /* Adds grace to the text */
+}
+
+.journey-text {
+    font-family: 'Georgia', serif; /* Keep the professional serif for the subheading */
+    font-size: 1.2em;
+    color: #a66d6d; /* Subtle dark rose pink for the "journey" part */
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 0;
+    text-transform: uppercase;
+    font-style: italic; /* A soft italic for that delicate touch */
+}
+
+.about-me-introduction h2::after {
+    content: "";
+    border-bottom: 2px solid #d48f8f; /* Underline effect to give more emphasis */
+    width: 50%;
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.journey-text {
+    margin-top: 15px;
+}
+
+/* Subtitle Section */
+.subtitle {
+            text-align: center; /* Center the subtitle */
+            margin-top: 40px; /* Space above the subtitle */
+            margin-bottom: 20px; /* Space below the subtitle */
+            padding: 10px; /* Padding for spacing */
+        }
+
+        .subtitle h2 {
+            font-family: 'Playfair Display', serif; /* Elegant font */
+            font-size: 2.5em; /* Font size for the subtitle */
+            font-weight: 600; /* Bold but not too strong */
+            color: #ff7f7f; /* Soft pink color to match the theme */
+            letter-spacing: 1px; /* Add spacing between letters */
+            text-transform: uppercase; /* Make the subtitle uppercase */
+            position: relative; /* Positioning for decoration */
+        }
+
+        .subtitle h2::after {
+            content: ''; /* Decorative line below the subtitle */
+            position: absolute;
+            bottom: -10px; /* Place the line below the subtitle */
+            left: 50%; /* Center the line */
+            transform: translateX(-50%); /* Center the line exactly */
+            width: 80px; /* Width of the line */
+            height: 4px; /* Height of the line */
+            background-color: #ff7f7f; /* Soft pink */
+            border-radius: 5px; /* Rounded corners for a smooth line */
+        }
+
+   /* Container to hold all role models */
+   .role-models-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 50px;
+            justify-items: center;
+            align-items: flex-start;
+            min-height: 450;
+        }
+
+        /* Individual role model section */
+        .role-model-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #ffffff;
+            padding: 30px;
+            max-width: 300px;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .role-model-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Profile image styling */
+        .role-model-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #ffb6c1; /* Soft pink border */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        /* Role model name styling */
+        .role-model-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ff7f7f; /* Soft pink color */
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        /* Quote styling */
+        .role-model-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #f4a7c3; /* Light blush color */
+            margin-bottom: 20px;
+            padding-left: 25px;
+            border-left: 4px solid #ffb6c1;
+        }
+
+        /* Description styling */
+        .role-model-description {
+            font-size: 1.1em;
+            color: #5a5a5a;
+            line-height: 1.7;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+         /* Back Button */
+  .back-button {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .back-button a {
+      padding: 0.8rem 2rem;
+      background: #e94e77;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: #c9375d;
+    }
+    
+   
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .name-container h2 {
+                font-size: 6vw;
+            }
+
+            .main-content video {
+                height: auto;
+                width: 100%;
+            }
+
+            .cards-section {
+                padding: 20px;
+            }
+
+            .card {
+                width: 100%;
+                height: 250px;
+            }
+
+            .overlay {
+                font-size: 4vw;
+            }
+
+            .social-media {
+                padding: 15px;
+            }
+
+            .social-icons img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section p {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .name-container h2 {
+                font-size: 8vw;
+            }
+
+            .cards-section {
+                padding: 10px;
+            }
+
+            .card {
+                width: 100%;
+                height: 220px;
+            }
+
+            .overlay {
+                font-size: 5vw;
+            }
+
+        }
+</style>
+</head>
+<body>
+
+
+    <div class="top-box">
+
+        <div class="menu-container" onclick="toggleMenu()">
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+        </div>
+
+        <div class="options">
+            <a href="ABOUTME.html">About Me</a>
+            <a href="EDUCATION.html">Education</a>
+            <a href="HOBBY.html">Hobby</a>
+            <a href="GALLERY.html">Gallery</a>
+            <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+            <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+        </div>
+
+        <div class="search-container">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search..."
+            onfocus="showSuggestionBox()" 
+            onblur="hideSuggestionBox()"
+            oninput="updateSuggestions()"
+        >
+        <button onclick="searchFunction()">Search</button>
+        <div id="suggestionBox"></div>
+    </div>
+    
+</div>
+<!-- Search Results -->
+<div class="search-results" id="searchResults"></div>
+
+    <!-- Navbar (hidden initially) -->
+    <div class="navbar" id="navbar">
+        <a href="ABOUTME.html">About Me</a>
+        <a href="EDUCATION.html">Education</a>
+        <a href="HOBBY.html">Hobby</a>
+        <a href="GALLERY.html">Gallery</a>
+        <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+        <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+    </div>
+
+    <div class="main-content">
+        <video autoplay loop muted playsinline>
+            <source src="maimai3.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="about-me-introduction">
+        <h2>Behind this smile is a story waiting to be told. <span>Let’s start the journey.</span></h2>
+    </div>
+    
+
+
+    <!-- Information Table -->
+    <table style="margin: 20px auto; border-collapse: collapse; width: 80%; max-width: 600px; text-align: left;">
+        <tr>
+            <th style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fce4ec; font-weight: bold;">Title</th>
+            <th style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fce4ec; font-weight: bold;">Details</th>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Name</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Ummu Umairah Binti Hamidi</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Age</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">19 years 11 months</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Birthdate</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">19/12/2004</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Born At</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Hospital Angkatan Tentera Terendak Melaka</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Nationality</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Malaysia</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Religion</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Islam</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Race</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Melayu</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Address</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">Batu 27, Kampung Baru, Kuala Sungai Baru, 78200, Masjid Tanah, Melaka</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Social Medias</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">
+                <ul style="list-style-type: disc; padding-left: 20px; text-align: left;">
+                    <li><a href="https://www.instagram.com/maaairahhh" target="_blank" style="color: #d77fa1; text-decoration: none;">Instagram @maaairahhh</a></li>
+                    <li><a href="https://www.facebook.com/UmmuUmairah" target="_blank" style="color: #d77fa1; text-decoration: none;">Facebook @Ummu Umairah</a></li>
+                    <li><a href="https://www.tiktok.com/@maaairahhh" target="_blank" style="color: #d77fa1; text-decoration: none;">TikTok @maaairahhh</a></li>
+                    <li><a href="https://www.youtube.com/@maaairahhh" target="_blank" style="color: #d77fa1; text-decoration: none;">YouTube @maaairahhh</a></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Phone Number</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;">0182203384</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><strong>Email</strong></td>
+            <td style="padding: 8px 12px; border: 1px solid #e6b8cf; background-color: #fff8fb;"><a href="mailto:ummuumairah1912@gmail.com" style="color: #d77fa1; text-decoration: none;">ummuumairah1912@gmail.com</a></td>
+        </tr>
+    </table>
+
+    <div class="subtitle">
+        <h2>My Role Models</h2>
+    </div>
+
+    <div class="role-models-container">
+        <!-- Role Model 1 -->
+        <div class="role-model-container">
+            <img src="saw.jpg" alt="Nabi Muhammad Saw" class="role-model-image">
+            <div class="role-model-name">Prophet Muhammad Saw</div>
+            <div class="role-model-quote">"Do not grieve. Indeed, Allah is with us (At-Tawbah 9:40)." – Prophet Muhammad Saw</div>
+            <div class="role-model-description">
+                I deeply love and admire Prophet Muhammad (SAW) because of his unparalleled kindness, wisdom, and humility. He was a true leader who always prioritized compassion, justice, and mercy, showing us the importance of treating others with respect and empathy. His patience in the face of adversity, his dedication to spreading peace, and his unshakeable trust in Allah continue to inspire me every day. Prophet Muhammad (SAW) taught us that the greatest strength lies in gentleness and the power of forgiveness. He is not just a role model, but a guiding light for all of humanity, and I strive to live by his teachings and reflect his character in my own life
+            </div>
+        </div>
+
+        <!-- Role Model 2 -->
+        <div class="role-model-container">
+            <img src="family2.jpg" alt="Role Model 2" class="role-model-image">
+            <div class="role-model-name">My Grandparents</div>
+            <div class="role-model-quote">"Hold steadfast to your prayers, and let your heart shine through acts of charity." – Abu Bakar and wife</div>
+            <div class="role-model-description">
+                I love my grandparents so much. Even though they are at an age where many would expect them to stay at home and rest, they continue to work hard to earn their own living, never depending fully on their children. Despite this, they never hesitate to give to others through charity (sedekah). To me, they are everything — a true inspiration of strength, generosity, and selflessness
+            </div>
+        </div>
+
+        <!-- Role Model 3 -->
+        <div class="role-model-container">
+            <img src="got7.jpg" alt="GOT7" class="role-model-image">
+            <div class="role-model-name">GOT7</div>
+            <div class="role-model-quote">"As a group, we are not just a team, we are a family. We work together, support each other, and grow together." – GOT7</div>
+            <div class="role-model-description">I love Got7 because they never fail to impress me. Their dedication to their music, their continuous growth, and their unwavering bond as a team are truly inspiring. The way they support and motivate each other as a family is something I deeply admire. Their teamwork and friendship are exceptional, and they remind me that when you have a strong, supportive group of people by your side, anything is possible. Got7's ability to stay united and positive, no matter the challenges they face, is something I look up to every day.
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <!-- Back Button -->
+  <div class="back-button">
+    <a href="index.html">Back to Homepage</a>
+  </div>
+
+
+    <footer class="footer">
+        <p>&copy; 2024 UMMU UMAIRAH. All Rights Reserved.</p>
+        <p>Follow me on social media: 
+            <a href="https://www.instagram.com/maaairahhh/" target="_blank">Instagram</a> |
+            <a href="https://www.tiktok.com/@maaairahhh?_t=8r8PDiRqIxb&_r=1" target="_blank">TikTok</a> |
+            <a href="https://www.youtube.com/@maaairahhh" target="_blank">YouTube</a> |
+            <a href="https://www.facebook.com/ummu.umairah.378" target="_blank">Facebook</a> |
+            <a href="https://wa.link/2l1uoy" target="_blank">WhatsApp</a>
+        </p>
+        <div id="clock" class="footer-clock">
+    </footer>
+
+    <script>
+        // JavaScript to toggle the hamburger menu
+        function toggleMenu() {
+            const menuContainer = document.querySelector('.menu-container');
+            const navbar = document.getElementById('navbar');
+            menuContainer.classList.toggle('active');  // Toggle hamburger icon
+            navbar.classList.toggle('active');  // Toggle the navbar visibility
+        }
+        
+
+    // Enhance search functionality with dynamic suggestions
+    const searchableItems = [
+        { name: "About Me", link: "ABOUTME.html" },
+        { name: "Education", link: "EDUCATION.html" },
+        { name: "Hobby", link: "HOBBY.html" },
+        { name: "Gallery", link: "GALLERY.html" },
+        { name: "Skills & Experience", link: "SKILLSANDEXPERIENCES.html" },
+        { name: "Achievements & Awards", link: "ACHIEVEMENTSANDAWARDS.html" },
+    ];
+    
+    const searchInput = document.getElementById("searchInput");
+    const suggestionBox = document.getElementById("suggestionBox");
+    
+    // Show suggestion box when focused
+    function showSuggestionBox() {
+        suggestionBox.style.display = "block";
+    }
+    
+    // Hide suggestion box when input is blurred
+    function hideSuggestionBox() {
+        setTimeout(() => (suggestionBox.style.display = "none"), 150); // Delay to allow click
+    }
+    
+    // Update suggestions dynamically
+    function updateSuggestions() {
+        const query = searchInput.value.trim().toLowerCase();
+        suggestionBox.innerHTML = "";
+    
+        if (!query) return; // Don't display suggestions if input is empty
+    
+        const matches = searchableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+    
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const suggestion = document.createElement("div");
+                suggestion.className = "suggestion";
+                suggestion.innerText = match.name;
+                suggestion.onclick = () => (window.location.href = match.link);
+                suggestionBox.appendChild(suggestion);
+            });
+        } else {
+            suggestionBox.innerHTML = "<div class='no-results'>No matches found</div>";
+        }
+    }
+    
+    // Handle search button functionality
+    function searchFunction() {
+        const query = searchInput.value.trim().toLowerCase();
+    
+        if (!query) {
+            alert("Please enter a search term!");
+            return;
+        }
+    
+        const match = searchableItems.find(item =>
+            item.name.toLowerCase() === query
+        );
+    
+        if (match) {
+            window.location.href = match.link;
+        } else {
+            alert("No exact matches found! Try using suggestions.");
+        }
+    }
+    function updateClock() {
+    const clockElement = document.getElementById('clock');
+    const currentDate = new Date();
+
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+    const year = currentDate.getFullYear();
+
+    // Format the clock as HH:MM:SS and Date as DD/MM/YYYY
+    clockElement.innerHTML = `${hours}:${minutes}:${seconds} | ${day}/${month}/${year}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize the clock when the page loads
+updateClock();
+
+    
+    </script>
+    
+
+
+    
+    
+</body>
+</html>

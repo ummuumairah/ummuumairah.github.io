@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements Timeline</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #fef6f9;
+            color: #4a4a4a;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-box {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #ff0077;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            position: relative;
+        
+        }
+
+        .top-box .options {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .top-box .options a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .top-box .options a:hover {
+            color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: #ffffff;
+            color: #ff67c5;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            cursor: pointer;
+            margin-left: -5px;
+        }
+
+        .search-container button:hover {
+            background-color: #ff60b8;
+            color: white;
+        }
+
+         /* Suggestions List - Enhance with Smooth Transitions */
+#suggestionBox {
+    position: absolute;
+    top: 60px; /* Adjust for proper placement */
+    left: 10; 
+    width: 110; /* Adjust to align with input */
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    font-size: 1em;
+    padding: 10px;
+    display: none;
+}
+
+.suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-family: "Arial", sans-serif;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #ff67c5;
+    color: white;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Search Button Enhancements */
+.search-container button {
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        /* Coquette Hamburger Menu */
+        .menu-container {
+            position: absolute;  
+            top: 50%;  
+            left: 20px;  
+            transform: translateY(-50%);
+            z-index: 1000;  
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 86, 199, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ff60b8;
+            color: #fff;
+            border-radius: 25px;
+            transform: scale(1.1);
+        }
+
+        .menu-container.active .menu-bar:nth-child(1) {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(3) {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar.active {
+            width: 250px;
+        }
+
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 36px;
+            color: #c85a7c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #c85a7c;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .timeline-item:nth-child(odd) {
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) {
+            text-align: right;
+        }
+
+        .timeline-item .content {
+            display: inline-block;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            position: relative;
+        }
+
+        .timeline-item .content::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #c85a7c;
+            border-radius: 50%;
+            top: 15px;
+            left: -5px;
+            transform: translate(-50%, -50%);
+        }
+
+        .timeline-item:nth-child(even) .content::after {
+            left: auto;
+            right: -5px;
+        }
+
+        .timeline-item h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #c85a7c;
+        }
+
+        .timeline-item ol {
+            padding-left: 20px;
+        }
+
+        .timeline-item li {
+            margin-bottom: 10px;
+        }
+
+        .timeline-item button {
+            background-color: #c85a7c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .timeline-item button:hover {
+            background-color: #a64864;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content img {
+            max-width: 90%;
+            max-height: 70vh;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .modal-content button {
+            margin-top: 15px;
+            background-color: #c85a7c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+             background-color: #a64864;
+          
+       }
+
+               /* Back Button */
+    .back-button {
+      text-align: center;
+      margin: 3rem 0;
+      display: flex;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .back-button a {
+      padding: 0.8rem 2rem;
+      background: #e94e77;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: #c9375d;
+    }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+    .back-button a {
+        font-size: 14px;
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+
+            .main-content video {
+                height: auto;
+                width: 100%;
+            }
+
+            .cards-section {
+                padding: 20px;
+            }
+
+            .card {
+                width: 100%;
+                height: 250px;
+            }
+
+            .overlay {
+                font-size: 4vw;
+            }
+
+            .social-media {
+                padding: 15px;
+            }
+
+            .social-icons img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section p {
+                font-size: 20px;
+            }
+        
+
+        @media (max-width: 480px) {
+            .name-container h2 {
+                font-size: 8vw;
+            }
+
+            .cards-section {
+                padding: 10px;
+            }
+
+            .card {
+                width: 100%;
+                height: 220px;
+            }
+
+            .overlay {
+                font-size: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-box">
+
+        <div class="menu-container" onclick="toggleMenu()">
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+        </div>
+    
+        <div class="options">
+            <a href="ABOUTME.html">About Me</a>
+            <a href="EDUCATION.html">Education</a>
+            <a href="HOBBY.html">Hobby</a>
+            <a href="GALLERY.html">Gallery</a>
+            <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+            <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+        </div>
+    
+        <div class="search-container">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search..."
+            onfocus="showSuggestionBox()" 
+            onblur="hideSuggestionBox()"
+            oninput="updateSuggestions()"
+        >
+        <button onclick="searchFunction()">Search</button>
+        <div id="suggestionBox"></div>
+    </div>
+    
+    </div>
+    <!-- Search Results -->
+    <div class="search-results" id="searchResults"></div>
+    
+    <!-- Navbar (hidden initially) -->
+    <div class="navbar" id="navbar">
+        <a href="ABOUTME.html">About Me</a>
+        <a href="EDUCATION.html">Education</a>
+        <a href="HOBBY.html">Hobby</a>
+        <a href="GALLERY.html">Gallery</a>
+        <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+        <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+    </div>
+    
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" alt="Certificate">
+            <p id="modal-info"></p>
+            <div>
+                <button id="prev" onclick="prevImage()">Previous</button>
+                <button id="next" onclick="nextImage()">Next</button>
+            </div>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    
+    <div class="container">
+        <h1>Achievements & Awards </h1>
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2024</h3>
+                    <ol>
+                        <li>Johan Pertandingan Bola Jaring, Clash of Titan
+                            <button onclick="openModal(['cert1.jpg','titan1.jpg','titan2.jpg'],'Winner of the Clash of Titan Netball Tournament.')">View</button>
+                        </li>
+                        <li>Johan Pertandingan Bola Jaring, SUKOL
+                            <button onclick="openModal(['cert2.jpg', 'sukol2.jpg', 'sukol3.jpg', 'sukol4.jpg'] ,'Sukan Antara Kolej 2024 : Wakil Nilam.')">View</button>
+                        </li>
+                    </ol>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2023</h3>
+                    <ol>
+                        <li>Johan Pertandingan Bola Jaring, SUKOL
+                            <button onclick="openModal(['cert3.jpg', 'sukol6.jpg'], 'Sukan Antara Kolej 2024 : Wakil Nilam.')">View</button>
+                        </li>
+                        <li>Pelantikan Sebagai Ketua Wing 2A blok Nilam, 2022/2023
+                            <button onclick="openModal(['cert4.jpg'], 'Pelantikan sebagai Ketua Wing 2A Blok Nilam.')">View</button>
+                        </li>
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2021</h3>
+                    <ol>
+                        <li>Juara Pertandingan Ko Akademik 1 : Debat
+                            <button onclick="openModal(['cert5.jpg'], 'Juara Pertandingan Ko Akademik 1 : Debat.')">View</button>
+                        </li>
+                        <li>Pelantikan sebagai Biro 2k Asrama Aspuri
+                            <button onclick="openModal(['cert6.jpg'], 'Pelantikan sebagai Biro 2k Asrama Aspuri.')">View</button>
+                        </li>
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2020</h3>
+                    <ol>
+                        <li>ke-3 Pertandingan Kad Merdeka Sempena Bulan Patriotisme dan Ceria Merdeka 2020
+                            <button onclick="openModal(['cert7.jpg'], 'ke-3 Pertandingan Kad Merdeka Sempena Bulan Patriotisme dan Ceria Merdeka 2020.')">View</button>
+                        </li>
+                        <li> Khidmat Cemerlang sebagai Bendahari Silat Serimau Hitam
+                            <button onclick="openModal(['cert8.jpg'], 'Khidmat Cemerlang sebagai Bendahari Silat Serimau Hitam.')">View</button>
+                        </li>
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2019</h3>
+                    <ol>
+                        <li>Anugerah Penglibatan Cemerlang 1M1S Bola Jaring
+                            <button onclick="openModal(['cert9.jpg'], 'Anugerah Penglibatan Cemerlang 1M1S Bola Jaring.')">View</button>
+                        </li>
+                        <li>ke-4 Kejohanan Bola Jaring Peringkat Kawasan Masjid Tanah 
+                            <button onclick="openModal(['cert10.jpg'], 'ke-4 Kejohanan Bola Jaring Peringkat Kawasan Masjid Tanah .')">View</button>
+                        </li>
+                        <li>Anugerah Perak Pencapaian Unit Beruniform Cemerlang Pencak Silat, Majlis Anugerah Kualiti 
+                            <button onclick="openModal(['cert11.jpg'], 'Anugerah Perak Pencapaian Unit Beruniform Cemerlang Pencak Silat, Majlis Anugerah Kualiti .')">View</button>
+                        </li>
+                        <li>Pelantikan Sebagai Ketua Asrama 3 Aspuri
+                            <button onclick="openModal(['cert12.jpg'], 'Pelantikan Sebagai Ketua Asrama 3 Aspuri.')">View</button>
+                        </li> 
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2018</h3>
+                    <ol>
+                        <li>Sijil Perak dalam Peperiksaan Akhir Tahun Tingkatan 2 
+                            <button onclick="openModal(['cert13.jpg'], 'Sijil Perak dalam Peperiksaan Akhir Tahun Tingkatan 2.')">View</button>
+                        </li>
+                      
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2017</h3>
+                    <ol>
+                        <li>Penyertaan Pertandingan Bola Jaring 3on3 Piala Menteri Pendidikan Peringkat Daerah Alor Gajah 
+                            <button onclick="openModal(['cert14.jpg'], 'Penyertaan Pertandingan Bola Jaring 3on3 Piala Menteri Pendidikan Peringkat Daerah Alor Gajah.')">View</button>
+                        </li>
+                      
+                    </ol>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="content">
+                    <h3>2013</h3>
+                    <ol>
+                        <li>Sijil Pengiktirafan Nilam 2013 
+                            <button onclick="openModal(['cert15.jpg'], 'Sijil Pengiktirafan Nilam 2013 .')">View</button>
+                        </li>
+                      
+                    </ol>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" alt="Certificate">
+            <p id="modal-info"></p>
+            <div>
+                <button id="prev" onclick="prevImage()">Previous</button>
+                <button id="next" onclick="nextImage()">Next</button>
+            </div>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+
+    
+<div class="back-button">
+    <a href="INDEX.html">Back to Homepage</a>
+  </div>
+
+
+    <footer class="footer">
+        <p>&copy; 2024 UMMU UMAIRAH. All Rights Reserved.</p>
+        <p>Follow me on social media: 
+            <a href="https://www.instagram.com/maaairahhh/" target="_blank">Instagram</a> |
+            <a href="https://www.tiktok.com/@maaairahhh?_t=8r8PDiRqIxb&_r=1" target="_blank">TikTok</a> |
+            <a href="https://www.youtube.com/@maaairahhh" target="_blank">YouTube</a> |
+            <a href="https://www.facebook.com/ummu.umairah.378" target="_blank">Facebook</a> |
+            <a href="https://wa.link/2l1uoy" target="_blank">WhatsApp</a>
+        </p>
+        <div id="clock" class="footer-clock">
+    </footer>
+
+    <script>
+
+        let currentImages = [];
+        let currentIndex = 0;
+    
+        function openModal(images, info) {
+            currentImages = images; // Simpan senarai gambar
+            currentIndex = 0; // Mula dari gambar pertama
+            document.getElementById('modal-img').src = currentImages[currentIndex];
+            document.getElementById('modal-info').textContent = info;
+            document.getElementById('modal').style.display = "flex";
+        }
+    
+        function closeModal() {
+            document.getElementById('modal').style.display = "none";
+        }
+    
+        function prevImage() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                document.getElementById('modal-img').src = currentImages[currentIndex];
+            }
+        }
+    
+        function nextImage() {
+            if (currentIndex < currentImages.length - 1) {
+                currentIndex++;
+                document.getElementById('modal-img').src = currentImages[currentIndex];
+            }
+        }
+
+        // JavaScript to toggle the hamburger menu
+        function toggleMenu() {
+            const menuContainer = document.querySelector('.menu-container');
+            const navbar = document.getElementById('navbar');
+            menuContainer.classList.toggle('active');  // Toggle hamburger icon
+            navbar.classList.toggle('active');  // Toggle the navbar visibility
+        }
+        
+
+    // Enhance search functionality with dynamic suggestions
+    const searchableItems = [
+        { name: "About Me", link: "ABOUTME.html" },
+        { name: "Education", link: "EDUCATION.html" },
+        { name: "Hobby", link: "HOBBY.html" },
+        { name: "Gallery", link: "GALLERY.html" },
+        { name: "Skills & Experience", link: "SKILLSANDEXPERIENCES.html" },
+        { name: "Achievements & Awards", link: "ACHIEVEMENTSANDAWARDS.html" },
+    ];
+    
+    const searchInput = document.getElementById("searchInput");
+    const suggestionBox = document.getElementById("suggestionBox");
+    
+    // Show suggestion box when focused
+    function showSuggestionBox() {
+        suggestionBox.style.display = "block";
+    }
+    
+    // Hide suggestion box when input is blurred
+    function hideSuggestionBox() {
+        setTimeout(() => (suggestionBox.style.display = "none"), 150); // Delay to allow click
+    }
+    
+    // Update suggestions dynamically
+    function updateSuggestions() {
+        const query = searchInput.value.trim().toLowerCase();
+        suggestionBox.innerHTML = "";
+    
+        if (!query) return; // Don't display suggestions if input is empty
+    
+        const matches = searchableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+    
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const suggestion = document.createElement("div");
+                suggestion.className = "suggestion";
+                suggestion.innerText = match.name;
+                suggestion.onclick = () => (window.location.href = match.link);
+                suggestionBox.appendChild(suggestion);
+            });
+        } else {
+            suggestionBox.innerHTML = "<div class='no-results'>No matches found</div>";
+        }
+    }
+    
+    // Handle search button functionality
+    function searchFunction() {
+        const query = searchInput.value.trim().toLowerCase();
+    
+        if (!query) {
+            alert("Please enter a search term!");
+            return;
+        }
+    
+        const match = searchableItems.find(item =>
+            item.name.toLowerCase() === query
+        );
+    
+        if (match) {
+            window.location.href = match.link;
+        } else {
+            alert("No exact matches found! Try using suggestions.");
+        }
+    }
+
+    function updateClock() {
+    const clockElement = document.getElementById('clock');
+    const currentDate = new Date();
+
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+    const year = currentDate.getFullYear();
+
+    // Format the clock as HH:MM:SS and Date as DD/MM/YYYY
+    clockElement.innerHTML = `${hours}:${minutes}:${seconds} | ${day}/${month}/${year}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize the clock when the page loads
+updateClock();
+
+    
+    </script>
+    
+
+</body>
+</html>

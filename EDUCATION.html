@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Journey</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="javascript.js"></script>
+
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, 'Times New Roman';
+    background-color: #fef8f8;
+    color: #555;
+    line-height: 1.6;
+}
+
+        header {
+            background-color: #d17a88;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            font-family: Georgia, cursive;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin: 10px 0 0;
+        }
+
+        .top-box {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #ff0077;
+            padding: 20px;
+            color: white;
+            z-index: 1000;
+            position: relative;
+        
+        }
+
+        .top-box .options {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .top-box .options a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .top-box .options a:hover {
+            color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: #ffffff;
+            color: #ff67c5;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            cursor: pointer;
+            margin-left: -5px;
+        }
+
+        .search-container button:hover {
+            background-color: #ff60b8;
+            color: white;
+        }
+
+         /* Suggestions List - Enhance with Smooth Transitions */
+#suggestionBox {
+    position: absolute;
+    top: 60px; /* Adjust for proper placement */
+    left: 10; 
+    width: 110; /* Adjust to align with input */
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    font-size: 1em;
+    padding: 10px;
+    display: none;
+}
+
+.suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-family: "Arial", sans-serif;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #ff67c5;
+    color: white;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Search Button Enhancements */
+.search-container button {
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        /* Coquette Hamburger Menu */
+        .menu-container {
+            position: absolute;  
+            top: 50%;  
+            left: 20px;  
+            transform: translateY(-50%);
+            z-index: 1000;  
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 86, 199, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ff60b8;
+            color: #fff;
+            border-radius: 25px;
+            transform: scale(1.1);
+        }
+
+        .menu-container.active .menu-bar:nth-child(1) {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(3) {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar.active {
+            width: 250px;
+        }
+
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #d17a88;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-item-content {
+            width: 45%;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #f5d4d7;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-item-content h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #d17a88;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item-content p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item img {
+            width: 250px;
+            height: 250px;
+            object-fit: fill;
+            border-radius: 50%;
+            border: 4px solid #d17a88;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-item-content::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #fff;
+        }
+
+        .timeline-item:nth-child(even) .timeline-item-content::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent #fff transparent transparent;
+        }
+
+        .timeline-item:nth-child(odd) img {
+            margin-right: 20px;
+        }
+
+        .timeline-item:nth-child(even) img {
+            margin-left: 20px;
+        }
+
+        .timeline::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #d17a88;
+    top: 0;
+    bottom: 220px; /* Pastikan garis berhenti 50px sebelum akhir timeline */
+    left: 50%;
+    margin-left: 0px;
+}
+          /* Back Button */
+    .back-button {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .back-button a {
+      padding: 0.8rem 2rem;
+      background: #e94e77;
+      color: #fff;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .back-button a:hover {
+      background: #c9375d;
+    }
+
+    
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .name-container h2 {
+                font-size: 6vw;
+            }
+
+            .main-content video {
+                height: auto;
+                width: 100%;
+            }
+
+            .cards-section {
+                padding: 20px;
+            }
+
+            .card {
+                width: 100%;
+                height: 250px;
+            }
+
+            .overlay {
+                font-size: 4vw;
+            }
+
+            .social-media {
+                padding: 15px;
+            }
+
+            .social-icons img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section p {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .name-container h2 {
+                font-size: 8vw;
+            }
+
+            .cards-section {
+                padding: 10px;
+            }
+
+            .card {
+                width: 100%;
+                height: 220px;
+            }
+
+            .overlay {
+                font-size: 5vw;
+            }
+
+        }
+    </style>
+</head>
+<body>
+
+    
+
+    <div class="top-box">
+
+        <div class="menu-container" onclick="toggleMenu()">
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+            <div class="menu-bar"></div>
+        </div>
+
+        <div class="options">
+            <a href="ABOUTME.html">About Me</a>
+            <a href="EDUCATION.html">Education</a>
+            <a href="HOBBY.html">Hobby</a>
+            <a href="GALLERY.html">Gallery</a>
+            <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+            <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+        </div>
+
+        <div class="search-container">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search..."
+            onfocus="showSuggestionBox()" 
+            onblur="hideSuggestionBox()"
+            oninput="updateSuggestions()"
+        >
+        <button onclick="searchFunction()">Search</button>
+        <div id="suggestionBox"></div>
+    </div>
+    
+</div>
+<!-- Search Results -->
+<div class="search-results" id="searchResults"></div>
+
+    <!-- Navbar (hidden initially) -->
+    <div class="navbar" id="navbar">
+        <a href="ABOUTME.html">About Me</a>
+        <a href="EDUCATION.html">Education</a>
+        <a href="HOBBY.html">Hobby</a>
+        <a href="GALLERY.html">Gallery</a>
+        <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+        <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+    </div>
+
+    <header>
+        <h1>My Educational Journey</h1>
+        <p>A timeline of my growth and learning 📚✨</p>
+    </header>
+    <div class="timeline">
+        <!-- Item 1 -->
+        <div class="timeline-item">
+            <img src="kemas.png" alt="Tadika Kemas Photo">
+            <div class="timeline-item-content">
+                <h2>2007 - 2010</h2>
+                <p><b>Tadika Kemas Pengkalan Balak</b></p>
+                <p>Where my learning adventure began with crayons and ABCs!</p>
+            </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="timeline-item">
+            <img src="skpb.jpeg" alt="SK Pengkalan Balak Photo">
+            <div class="timeline-item-content">
+                <h2>2011 - 2012</h2>
+                <p><b>Sekolah Kebangsaan Pengkalan Balak</b></p>
+                <p>First steps into primary school – playground memories and new friends!</p>
+            </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="timeline-item">
+            <img src="skos.jpeg" alt="SK Othman Syawal Photo">
+            <div class="timeline-item-content">
+                <h2>2013 - 2014</h2>
+                <p><b>Sekolah Kebangsaan Othman Syawal</b></p>
+                <p>A time for growing up and discovering more about myself.</p>
+            </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="timeline-item">
+            <img src="skm.jpg" alt="SK Malim Photo">
+            <div class="timeline-item-content">
+                <h2>2014 - 2016</h2>
+                <p><b>Sekolah Kebangsaan Malim</b></p>
+                <p>Graduated from primary school with a heart full of dreams!</p>
+            </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="timeline-item">
+            <img src="smkgb.jpeg" alt="SMK Ghafar Baba Photo">
+            <div class="timeline-item-content">
+                <h2>2017 - 2022</h2>
+                <p><b>SKK SMK Ghafar Baba</b></p>
+                <p>High school days: laughter, challenges, and unforgettable friendships.</p>
+            </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="timeline-item">
+            <img src="uitm.webp" alt="UiTM Segamat Photo">
+            <div class="timeline-item-content">
+                <h2>2022 - 2024</h2>
+                <p><b>Universiti Teknologi MARA</b></p>
+                <p>Embracing independence, learning, and chasing my passions!</p>
+            </div>
+        </div>
+
+          <!-- Back Button -->
+  <div class="back-button">
+    <a href="INDEX.html">Back to Homepage</a>
+  </div>
+
+  <div class="navigation-links">
+    <p>Jump to:</p>
+    <a href="#2007-2010">Tadika Kemas</a>
+    <a href="#2011-2012">SK Pengkalan Balak</a>
+    <a href="#2013-2014">SK Othman Syawal</a>
+    <a href="#2014-2016">SK Malim</a>
+    <a href="#2017-2022">SMK Ghafar Baba</a>
+    <a href="#2022-2024">UiTM</a>
+</div>
+
+<div class="timeline">
+    <!-- Item 1 -->
+    <div class="timeline-item" id="2007-2010">
+        <img src="kemas.png" alt="Tadika Kemas Photo">
+        <div class="timeline-item-content">
+            <h2>2007 - 2010</h2>
+            <p><b>Tadika Kemas Pengkalan Balak</b></p>
+            <p>Where my learning adventure began with crayons and ABCs!</p>
+        </div>
+    </div>
+
+    <!-- Item 2 -->
+    <div class="timeline-item" id="2011-2012">
+        <img src="skpb.jpeg" alt="SK Pengkalan Balak Photo">
+        <div class="timeline-item-content">
+            <h2>2011 - 2012</h2>
+            <p><b>Sekolah Kebangsaan Pengkalan Balak</b></p>
+            <p>First steps into primary school – playground memories and new friends!</p>
+        </div>
+    </div>
+
+    <!-- Item 3 -->
+    <div class="timeline-item" id="2013-2014">
+        <img src="skos.jpeg" alt="SK Othman Syawal Photo">
+        <div class="timeline-item-content">
+            <h2>2013 - 2014</h2>
+            <p><b>Sekolah Kebangsaan Othman Syawal</b></p>
+            <p>A time for growing up and discovering more about myself.</p>
+        </div>
+    </div>
+
+    <!-- Item 4 -->
+    <div class="timeline-item" id="2014-2016">
+        <img src="skm.jpg" alt="SK Malim Photo">
+        <div class="timeline-item-content">
+            <h2>2014 - 2016</h2>
+            <p><b>Sekolah Kebangsaan Malim</b></p>
+            <p>Graduated from primary school with a heart full of dreams!</p>
+        </div>
+    </div>
+
+    <!-- Item 5 -->
+    <div class="timeline-item" id="2017-2022">
+        <img src="smkgb.jpeg" alt="SMK Ghafar Baba Photo">
+        <div class="timeline-item-content">
+            <h2>2017 - 2022</h2>
+            <p><b>SKK SMK Ghafar Baba</b></p>
+            <p>High school days: laughter, challenges, and unforgettable friendships.</p>
+        </div>
+    </div>
+
+    <!-- Item 6 -->
+    <div class="timeline-item" id="2022-2024">
+        <img src="uitm.webp" alt="UiTM Segamat Photo">
+        <div class="timeline-item-content">
+            <h2>2022 - 2024</h2>
+            <p><b>Universiti Teknologi MARA</b></p>
+            <p>Embracing independence, learning, and chasing my passions!</p>
+        </div>
+    </div>
+</div>
+
+    <footer class="footer">
+        <p>&copy; 2024 UMMU UMAIRAH. All Rights Reserved.</p>
+        <p>Follow me on social media: 
+            <a href="https://www.instagram.com/maaairahhh/" target="_blank">Instagram</a> |
+            <a href="https://www.tiktok.com/@maaairahhh?_t=8r8PDiRqIxb&_r=1" target="_blank">TikTok</a> |
+            <a href="https://www.youtube.com/@maaairahhh" target="_blank">YouTube</a> |
+            <a href="https://www.facebook.com/ummu.umairah.378" target="_blank">Facebook</a> |
+            <a href="https://wa.link/2l1uoy" target="_blank">WhatsApp</a>
+        </p>
+    </footer>
+
+    <script>
+        // JavaScript to toggle the hamburger menu
+        function toggleMenu() {
+            const menuContainer = document.querySelector('.menu-container');
+            const navbar = document.getElementById('navbar');
+            menuContainer.classList.toggle('active');  // Toggle hamburger icon
+            navbar.classList.toggle('active');  // Toggle the navbar visibility
+        }
+        
+
+    // Enhance search functionality with dynamic suggestions
+    const searchableItems = [
+        { name: "About Me", link: "ABOUTME.html" },
+        { name: "Education", link: "EDUCATION.html" },
+        { name: "Hobby", link: "HOBBY.html" },
+        { name: "Gallery", link: "GALLERY.html" },
+        { name: "Skills & Experience", link: "SKILLSANDEXPERIENCES.html" },
+        { name: "Achievements & Awards", link: "ACHIEVEMENTSANDAWARDS.html" },
+    ];
+    
+    const searchInput = document.getElementById("searchInput");
+    const suggestionBox = document.getElementById("suggestionBox");
+    
+    // Show suggestion box when focused
+    function showSuggestionBox() {
+        suggestionBox.style.display = "block";
+    }
+    
+    // Hide suggestion box when input is blurred
+    function hideSuggestionBox() {
+        setTimeout(() => (suggestionBox.style.display = "none"), 150); // Delay to allow click
+    }
+    
+    // Update suggestions dynamically
+    function updateSuggestions() {
+        const query = searchInput.value.trim().toLowerCase();
+        suggestionBox.innerHTML = "";
+    
+        if (!query) return; // Don't display suggestions if input is empty
+    
+        const matches = searchableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+    
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const suggestion = document.createElement("div");
+                suggestion.className = "suggestion";
+                suggestion.innerText = match.name;
+                suggestion.onclick = () => (window.location.href = match.link);
+                suggestionBox.appendChild(suggestion);
+            });
+        } else {
+            suggestionBox.innerHTML = "<div class='no-results'>No matches found</div>";
+        }
+    }
+    
+    // Handle search button functionality
+    function searchFunction() {
+        const query = searchInput.value.trim().toLowerCase();
+    
+        if (!query) {
+            alert("Please enter a search term!");
+            return;
+        }
+    
+        const match = searchableItems.find(item =>
+            item.name.toLowerCase() === query
+        );
+    
+        if (match) {
+            window.location.href = match.link;
+        } else {
+            alert("No exact matches found! Try using suggestions.");
+        }
+    }
+    
+    </script>
+    
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Introduction</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: rgb(247, 127, 157);
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .marquee {
+            background-color: rgb(247, 127, 157);
+            color: white;
+            padding: 10px;
+            font-size: 1.2em;
+            display: inline-block;
+            position: relative;
+            z-index: 3;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .top-box {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            background-color: #ff0077;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .top-box .options {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .top-box .options a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .top-box .options a:hover {
+            color: #000000;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .search-container input {
+            padding: 5px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            outline: none;
+        }
+
+        .search-container button {
+            background-color: #ffffff;
+            color: #ff67c5;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.0em;
+            cursor: pointer;
+            margin-left: -5px;
+        }
+
+        .search-container button:hover {
+            background-color: #ff60b8;
+            color: white;
+        }
+
+         /* Suggestions List - Enhance with Smooth Transitions */
+#suggestionBox {
+    position: absolute;
+    top: 60px; /* Adjust for proper placement */
+    left: 10; 
+    width: 110; /* Adjust to align with input */
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    font-size: 1em;
+    padding: 10px;
+    display: none;
+}
+
+.suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    font-family: "Arial", sans-serif;
+    color: #333333;
+    border-bottom: 1px solid #dddddd;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover {
+    background-color: #ff67c5;
+    color: white;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #ff4444;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Search Button Enhancements */
+.search-container button {
+    transition: all 0.3s ease-in-out;
+}
+
+.search-container button:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+        /* Coquette Hamburger Menu */
+        .menu-container {
+            position: absolute;  
+            top: 13%;  
+            left: 20px;  
+            transform: translateY(-50%);
+            z-index: 1000;  
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 86, 199, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 28px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ff60b8;
+            color: #fff;
+            border-radius: 25px;
+            transform: scale(1.1);
+        }
+
+        .menu-container.active .menu-bar:nth-child(1) {
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-container.active .menu-bar:nth-child(3) {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 0;
+        }
+
+        .navbar.active {
+            width: 250px;
+        }
+
+        h1 {
+            font-family: serif;
+            color: rgb(255, 255, 255);
+            font-size: 3vw;
+            margin: 0;
+        }
+
+        h2 {
+            font-family: serif;
+            font-size: 2.5vw;
+            margin: 0;
+        }
+
+.card video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .cards-section {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);  /* 3 columns, each 300px wide */
+    gap: 20px;  /* Space between cards */
+    padding: 40px;
+    justify-content: center;  /* Center the grid horizontally */
+    justify-items: center;  /* Center each card within the grid cell */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.card:hover .overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+
+.contact-section {
+    position: relative;
+    background-image: url("emailbackground.jpg");
+    background-size: cover; /* Ensures the image covers the full container */
+    background-position: center; /* Ensures the image is centered */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    width: 96vw; /* Or any desired width */
+    height: 220px; /* Adjust this height based on your design */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 50px;
+    color: black;
+    padding-bottom: 30px;
+}
+
+
+        .contact-section h2 {
+            font-size: 35px;
+            font-family: "Playfair Display", serif;
+            margin-bottom: 10px;
+        }
+
+        .contact-section p {
+            font-size: 24px;
+            font-family: "Playfair Display", serif;
+            margin-bottom: 20px;
+        }
+
+        .email-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .email-button:hover {
+            background-color: #0056b3;
+        }
+        .print-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    color: #fff;
+    background: linear-gradient(145deg, #f7a8b8, #ff91a4);
+    border-radius: 30px;
+    border: 2px solid #ff91a4;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 4px 4px 10px rgba(255, 145, 164, 0.4), -4px -4px 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Hover effect */
+.print-button:hover {
+    background: linear-gradient(145deg, #ff91a4, #f7a8b8);
+    transform: translateY(-4px);
+    box-shadow: 4px 4px 15px rgba(255, 145, 164, 0.6), -4px -4px 15px rgba(255, 255, 255, 0.6);
+}
+
+/* Focus effect for accessibility */
+.print-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 145, 164, 0.6);
+}
+
+/* Active effect when the button is clicked */
+.print-button:active {
+    transform: translateY(2px);
+    box-shadow: inset 4px 4px 10px rgba(255, 145, 164, 0.4), inset -4px -4px 10px rgba(255, 255, 255, 0.4);
+}
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .name-container h2 {
+                font-size: 6vw;
+            }
+
+            .main-content video {
+                height: auto;
+                width: 100%;
+            }
+
+            .cards-section {
+                padding: 20px;
+            }
+
+            .card {
+                width: 100%;
+                height: 250px;
+            }
+
+            .overlay {
+                font-size: 4vw;
+            }
+
+            .social-media {
+                padding: 15px;
+            }
+
+            .social-icons img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-section h2 {
+                font-size: 28px;
+            }
+
+            .contact-section p {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .name-container h2 {
+                font-size: 8vw;
+            }
+
+            .cards-section {
+                padding: 10px;
+            }
+
+            .card {
+                width: 100%;
+                height: 220px;
+            }
+
+            .overlay {
+                font-size: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <marquee class="marquee">
+        🎀 Welcome to my e-resume website! 🎀 I am Ummu Umairah, your energy maker! 🎀 "Believe in yourself, and you're halfway there." 🎀
+    </marquee>
+
+    <div class="menu-container" onclick="toggleMenu()">
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+    </div>
+
+
+    <div class="top-box">
+        <div class="options">
+            <a href="ABOUTME.html">About Me</a>
+            <a href="EDUCATION.html">Education</a>
+            <a href="HOBBY.html">Hobby</a>
+            <a href="GALLERY.html">Gallery</a>
+            <a href="SKILLSANDEXPERIENCES.html">Skills & Experience</a>
+            <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+        </div>
+
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search..."
+                onfocus="showSuggestionBox()" 
+                onblur="hideSuggestionBox()"
+                oninput="updateSuggestions()"
+            >
+            <button onclick="searchFunction()">Search</button>
+            <div id="suggestionBox"></div>
+        </div>
+        
+    </div>
+    <!-- Search Results -->
+    <div class="search-results" id="searchResults"></div>
+
+    <div class="circle-frame" style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden; margin: 20px auto; border: 5px solid #e9c9d2;">
+        <img src="aboutmemai.jpg" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <h1 style="margin-top: 20px; font-size: 2.5em; color: #4a3b4c;">UMMU UMAIRAH</h1>
+
+    <div class="quote-box" style="background-color: #fff8fb; border: 2px solid #e6b8cf; color: #6e515d; padding: 20px 30px; margin: 20px auto; display: inline-block; font-style: italic; font-size: larger; border-radius: 8px;">
+        <p>Allah said,<br>
+        <strong>إِنَّنِي مَعَكُمَا أَسْمَعُ وَأَرَ‌ىٰ</strong><br>
+        "I am surely with you both. I hear and I see." - 20:46
+        </p>
+    </div>
+
+    <br>
+    <br> 
+    
+
+    <div class="navbar" id="navbar">
+        <a href="ABOUTME.html">About Me</a>
+        <a href="EDUCATION.html">Education</a>
+        <a href="HOBBY.html">Hobby</a>
+        <a href="GALLERY.html">Gallery</a>
+        <a href="SKILLSANDEXPERIENCES.html">Skills & Experiences</a>
+        <a href="ACHIEVEMENTSANDAWARDS.html">Achievements & Awards</a>
+    </div>
+
+    <div class="cards-section">
+        <div class="card">
+        <a href="ABOUTME.html">
+            <video autoplay loop muted playsinline>
+                <source src="aboutme.mp4" type="video/mp4">
+            </video>
+            <div class="overlay">About Me</div>
+        </a>
+        </div>
+
+        <div class="card">
+        <a href="EDUCATION.html">
+            <img src="education.jpg" alt="Education Image">
+            <div class="overlay">Education</div>
+        </a>
+        </div>
+
+        <div class="card">
+        <a href="HOBBY.html">
+            <video autoplay loop muted playsinline>
+                <source src="hobby.mp4" type="video/mp4">
+            </video>
+            <div class="overlay">Hobby</div>
+        </a>
+        </div>
+
+        <div class="card">
+        <a href="GALLERY.html">
+            <img src="Gallery.jpg" alt="Gallery">
+            <div class="overlay">Gallery</div>
+        </a>
+        </div>
+
+        <div class="card">
+        <a href="SKILLSANDEXPERIENCES.html">
+            <img src="SKILLSANDEXPERIENCES.jpg" alt="SKILLSANDEXPERIENCES">
+            <div class="overlay">Skills & Experiences</div>
+        </a>
+        </div>
+
+        <div class="card">
+        <a href="ACHIEVEMENTSANDAWARDS.html">
+            <img src="Achievement and Awards.jpg" alt="Achievements & Awards">
+            <div class="overlay">Achievements & Awards</div>
+        </a>
+        </div>
+
+   
+    </div>
+
+    <div class="contact-section">
+        <h2>Get in Touch</h2>
+        <p>Email me for any inquiries or professional opportunities!</p>
+        <a href="mailto:ummuumairah1912@gmail.com" class="email-button">Email Me</a>
+    </div>
+    <br>
+    <br>
+
+    <div class="print-button">
+        <a href="resume.pdf" target="_blank" class="print-button">Print My Resume</a>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 UMMU UMAIRAH. All Rights Reserved.</p>
+        <p>Follow me on social media: 
+            <a href="https://www.instagram.com/maaairahhh/" target="_blank">Instagram</a> |
+            <a href="https://www.tiktok.com/@maaairahhh?_t=8r8PDiRqIxb&_r=1" target="_blank">TikTok</a> |
+            <a href="https://www.youtube.com/@maaairahhh" target="_blank">YouTube</a> |
+            <a href="https://www.facebook.com/ummu.umairah.378" target="_blank">Facebook</a> |
+            <a href="https://wa.link/2l1uoy" target="_blank">WhatsApp</a>
+        </p>
+        <div id="clock" class="footer-clock">
+            
+        </div> 
+    </footer>
+
+    <script>
+// JavaScript to toggle the hamburger menu
+function toggleMenu() {
+    const menuContainer = document.querySelector('.menu-container');
+    const navbar = document.getElementById('navbar');
+    menuContainer.classList.toggle('active');  // Toggle hamburger icon
+    navbar.classList.toggle('active');  // Toggle the navbar visibility
+}
+
+ // Enhance search functionality with dynamic suggestions
+const searchableItems = [
+    { name: "About Me", link: "ABOUTME.html" },
+    { name: "Education", link: "EDUCATION.html" },
+    { name: "Hobby", link: "HOBBY.html" },
+    { name: "Gallery", link: "GALLERY.html" },
+    { name: "Skills & Experience", link: "SKILLSANDEXPERIENCES.html" },
+    { name: "Achievements & Awards", link: "ACHIEVEMENTSANDAWARDS.html" },
+];
+
+const searchInput = document.getElementById("searchInput");
+const suggestionBox = document.getElementById("suggestionBox");
+
+// Show suggestion box when focused
+function showSuggestionBox() {
+    suggestionBox.style.display = "block";
+}
+
+// Hide suggestion box when input is blurred
+function hideSuggestionBox() {
+    setTimeout(() => (suggestionBox.style.display = "none"), 150); // Delay to allow click
+}
+
+// Update suggestions dynamically
+function updateSuggestions() {
+    const query = searchInput.value.trim().toLowerCase();
+    suggestionBox.innerHTML = "";
+
+    if (!query) return; // Don't display suggestions if input is empty
+
+    const matches = searchableItems.filter(item =>
+        item.name.toLowerCase().includes(query)
+    );
+
+    if (matches.length > 0) {
+        matches.forEach(match => {
+            const suggestion = document.createElement("div");
+            suggestion.className = "suggestion";
+            suggestion.innerText = match.name;
+            suggestion.onclick = () => (window.location.href = match.link);
+            suggestionBox.appendChild(suggestion);
+        });
+    } else {
+        suggestionBox.innerHTML = "<div class='no-results'>No matches found</div>";
+    }
+}
+
+// Handle search button functionality
+function searchFunction() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    if (!query) {
+        alert("Please enter a search term!");
+        return;
+    }
+
+    const match = searchableItems.find(item =>
+        item.name.toLowerCase() === query
+    );
+
+    if (match) {
+        window.location.href = match.link;
+    } else {
+        alert("No exact matches found! Try using suggestions.");
+    }
+}
+
+function updateClock() {
+    const clockElement = document.getElementById('clock');
+    const currentDate = new Date();
+
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+    const year = currentDate.getFullYear();
+
+    // Format the clock as HH:MM:SS and Date as DD/MM/YYYY
+    clockElement.innerHTML = `${hours}:${minutes}:${seconds} | ${day}/${month}/${year}`;
+}
+
+// Update the clock every second
+setInterval(updateClock, 1000);
+
+// Initialize the clock when the page loads
+updateClock();
+
+
+</script>
+
+
+</body>
+</html>
